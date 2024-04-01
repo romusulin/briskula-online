@@ -51,12 +51,14 @@ export class Game {
 		} else {
 			const winningCard = this.findWinningCard();
 			this.updateScore(winningCard);
-			this.table = [];
+
 			this.io.to(this.roomId).emit(EVENTS.HAND_FINISHED, this.pointsByPlayer);
 			this.playerOnTurnIndex = this.players.findIndex((p) => winningCard.player === p);
 			this.dealCards(1);
 			console.log('Table:' + JSON.stringify(this.table));
 			console.log(`Player #${this.playerOnTurnIndex} ${winningCard.player} won the round with: ${JSON.stringify(winningCard.card)}`);
+			console.log(`Current score: ${this.pointsByPlayer[this.players[0]]} - ${this.pointsByPlayer[this.players[1]]}`)
+			this.table = [];
 		}
 
 		if (this.getAccumulatedPoints() === 120) {
