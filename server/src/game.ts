@@ -74,7 +74,6 @@ export class Game {
 					player: player,
 					cards: this.briscolaCard
 				});
-				this.briscolaCard = null;
 				this.io.to(this.roomId).emit(EVENTS.SET_BRISCOLA, {card: null});
 			} else {
 				const drawnCards = this.deck.draw(numberOfCards);
