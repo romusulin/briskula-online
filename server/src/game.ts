@@ -31,6 +31,7 @@ export class Game {
 
 		this.briscolaCard = this.deck.draw()[0];
 		this.io.to(this.roomId).emit(EVENTS.SET_BRISCOLA, {card: this.briscolaCard});
+		console.log(`Setting briscola to: ${this.briscolaCard}`);
 
 		this.playerOnTurnIndex = 0;
 		this.io.to(this.roomId).emit(EVENTS.PLAYER_ON_TURN, { playerOnTurn: this.players[this.playerOnTurnIndex]});
@@ -78,7 +79,7 @@ export class Game {
 			if (!this.deck.length()) {
 				this.io.to(this.roomId).emit(EVENTS.DRAW_CARD, {
 					player: player,
-					cards: this.briscolaCard
+					cards: [this.briscolaCard]
 				});
 				this.io.to(this.roomId).emit(EVENTS.SET_BRISCOLA, {card: null});
 
