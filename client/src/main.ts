@@ -2,7 +2,7 @@ import { Deck, ICard, EVENTS } from '@briskula-online/briskula-shared-entities';
 import { io, Socket } from 'socket.io-client';
 import $ from 'jquery';
 
-const socket= io('http://localhost:80');
+const socket= io();
 
 const startGameButton = document.getElementById('btn-start-game');
 const briscolaEl = document.getElementById('briscola');
