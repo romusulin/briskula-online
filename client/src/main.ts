@@ -69,7 +69,11 @@ socket.on(EVENTS.HAND_FINISHED, (res) => {
 	setTimeout(() => {
 		handOverCooldown = false;
 		redrawPlayArea();
-	}, 2000);
+	}, 3000);
+});
+
+socket.on(EVENTS.GAME_OVER, (res) => {
+	alert(res);
 });
 
 const redrawOpponentHand = () => {
@@ -111,7 +115,7 @@ const redrawPlayerHand = () => {
 			});
 
 			playArea.push(card);
-			playerHand = [...playerHand.filter(c => c.rank !== card.rank || c.suit !== card.suit)];
+			playerHand = [...(playerHand.filter(c => c.rank !== card.rank || c.suit !== card.suit) || [])];
 			redrawPlayerHand();
 			redrawPlayArea();
 			myTurn = false;
