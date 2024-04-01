@@ -39,13 +39,8 @@ export class Game {
 	}
 
 	playedCardHandler(res: PlayedCard) {
-		console.log('My turn handler');
-		if (!this.deck.length()) {
-			this.io.to(this.roomId).emit(EVENTS.GAME_OVER, this.pointsByPlayer);
-		}
-
 		this.io.to(this.roomId).emit(EVENTS.PLAY_CARD, res);
-		console.log('Emitting played card');
+
 		this.table.push(res);
 
 		if (this.table.length < 2) {
@@ -57,7 +52,12 @@ export class Game {
 			this.io.to(this.roomId).emit(EVENTS.HAND_FINISHED, this.pointsByPlayer);
 			this.playerOnTurnIndex = this.players.findIndex((p) => winningCard.player === p);
 			this.dealCards(1);
+			console.log('Table:' + JSON.stringify(this.table));
 			console.log(`Player #${this.playerOnTurnIndex} ${winningCard.player} won the round with: ${JSON.stringify(winningCard.card)}`);
+		}
+
+		if (this.getAccumulatedPoints() === 120) {
+			this.io.to(this.roomId).emit(EVENTS.GAME_OVER, this.pointsByPlayer);
 		}
 
 		this.io.to(this.roomId).emit(EVENTS.PLAYER_ON_TURN, { playerOnTurn: this.players[this.playerOnTurnIndex]});
@@ -119,5 +119,11 @@ export class Game {
 		const secondIndex = ranks.indexOf(b.card.rank);
 
 		return firstIndex < secondIndex ? a : b;
+	}
+
+	getAccumulatedPoints() {
+		return Object.keys(this.pointsByPlayer).reduce((acc, key) => {
+			return acc + this.pointsByPlayer[key];
+		}, 0);
 	}
 }

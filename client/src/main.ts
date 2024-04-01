@@ -34,7 +34,7 @@ socket.on(EVENTS.DRAW_CARD, (res) => {
 	console.log(`JA SAM: ${socket.id}`);
 	console.log(`Dobio sam karte : ${JSON.stringify(res)}`);
 
-	if (res.player !== socket.id) {
+	if (res.player !== socket.id || !res.cards?.length) {
 		return;
 	}
 
