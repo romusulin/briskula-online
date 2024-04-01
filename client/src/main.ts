@@ -50,11 +50,11 @@ socket.on(EVENTS.PLAYER_ON_TURN, (res) => {
 
 
 socket.on(EVENTS.PLAY_CARD, (res) => {
-	if (res.player === socket.id) {
+	const elements = opponentCardsEl.children;
+	if (res.player === socket.id || !elements.length) {
 		return;
 	}
 
-	const elements = opponentCardsEl.children;
 	const randomIndex = Math.floor(Math.random()* elements.length);
 	elements[randomIndex].remove();
 
