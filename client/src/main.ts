@@ -73,7 +73,9 @@ socket.on(EVENTS.HAND_FINISHED, (res) => {
 });
 
 socket.on(EVENTS.GAME_OVER, (res) => {
-	alert(res);
+	setTimeout(() => {
+		alert(JSON.stringify(res))
+	}, 2500);
 });
 
 const redrawOpponentHand = () => {
