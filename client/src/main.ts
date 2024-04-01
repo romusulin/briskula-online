@@ -55,7 +55,7 @@ socket.on(EVENTS.PLAY_CARD, (res) => {
 	}
 
 	const elements = opponentCardsEl.children;
-	const randomIndex = Math.floor(Math.random()* 3);
+	const randomIndex = Math.floor(Math.random()* elements.length);
 	elements[randomIndex].remove();
 
 	playArea.push(res.card);
