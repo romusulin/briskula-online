@@ -11,6 +11,7 @@ export class Game {
 	pointsByPlayer: { [playerId: string]: number};
 	briscolaCard: ICard | null;
 	roomId: string;
+	isDeckEmptied: boolean;
 
 	constructor(io: Server, sockets: Socket[], roomId: string) {
 		console.log('Starting game... players:' + sockets);
@@ -24,6 +25,7 @@ export class Game {
 			[this.players[1]]: 0
 		};
 		this.roomId = roomId;
+		this.isDeckEmptied = false;
 
 		this.dealCards(3);
 
@@ -64,6 +66,10 @@ export class Game {
 	}
 
 	dealCards(numberOfCards: number) {
+		if (this.isDeckEmptied) {
+			return;
+		}
+
 		const sortedPlayers = [...this.players].sort((a,b) => {
 			return a === this.players[this.playerOnTurnIndex] ? -1 : 1;
 		});
@@ -75,6 +81,9 @@ export class Game {
 					cards: this.briscolaCard
 				});
 				this.io.to(this.roomId).emit(EVENTS.SET_BRISCOLA, {card: null});
+
+				// After drawing briscola - draw no more cards
+				this.isDeckEmptied = true;
 			} else {
 				const drawnCards = this.deck.draw(numberOfCards);
 				this.io.to(this.roomId).emit(EVENTS.DRAW_CARD, {
