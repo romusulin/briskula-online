@@ -128,7 +128,8 @@ const redrawPlayArea = () => {
 
 	for (const card of playArea) {
 		const suitRank = `${card.suit}${card.rank}`;
-		playAreaHtml += `<div class="card"><img src="/images/${suitRank}.jpg"></div>`
+		const randomRotation = Math.floor(Math.random() * 40) - 20;
+		playAreaHtml += `<div class="card" style="transform: rotate(${randomRotation}deg)"><img src="/images/${suitRank}.jpg"></div>`
 	}
 
 	playAreaEl.innerHTML = playAreaHtml;
