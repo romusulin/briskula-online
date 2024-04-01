@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .card .player-card {
+            width: 82px;
+            height: 147px;
+            background-color: lightgray;
+            border: 1px solid gray;
+            border-radius: 5px;
+            margin: 10px;
+            display: inline-block;
+            text-align: center;
+            line-height: 150px;
+            font-size: 20px;
+        }
+        .opponent-cards {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .play-area {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .player-cards {
+            text-align: center;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            height:250px;
+        }
+        .deck {
+            margin-left:300px;
+        }
+        .button-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #room-id {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="button-container">
+        <input type="text" id="room-id" minlength="1" maxlength="12" size="8" />
+        <button class="button" id="btn-start-game">Ready</button>
+    </div>
+    <div id="opponent-cards" class="row"></div>
+    <div class="row">
+            <div id="play-area" class="row play-area"></div>
+        <div class="row deck">
+            <div id="briscola"><img src="/images/P0.jpg"></div>
+            <div id="deck"><img src="/images/P0.jpg"></div>
+        </div>
+    </div>
+
+    <div id="player-cards" class="row">
+    </div>
+
+    <div clas="row" style="outline: 2px solid cadetblue; width: fit-content;">
+        <p style="display: inline-flex;">Trenutni bodovi:</p>
+        <p id="points" style="display: inline-flex;"></p>
+    </div>
+</div>
+</body>
+</html>

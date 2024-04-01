@@ -1,0 +1,12 @@
+{
+  "name": "@briskula-online/briskula-shared-entities",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "description": ""
+}
