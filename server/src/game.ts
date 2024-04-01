@@ -130,8 +130,11 @@ export class Game {
 	}
 
 	getAccumulatedPoints() {
-		return Object.keys(this.pointsByPlayer).reduce((acc, key) => {
+		const sum =  Object.keys(this.pointsByPlayer).reduce((acc, key) => {
 			return acc + this.pointsByPlayer[key];
 		}, 0);
+		console.log(`Total sum of points: ${sum}`);
+
+		return sum;
 	}
 }
