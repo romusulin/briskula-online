@@ -64,7 +64,7 @@ socket.on(EVENTS.PLAY_CARD, (res) => {
 
 socket.on(EVENTS.HAND_FINISHED, (res) => {
 	handOverCooldown = true;
-	document.getElementById("points").innerText = String(res[socket.id];);
+	document.getElementById("points").innerText = String(res[socket.id]);
 	playArea = [];
 	setTimeout(() => {
 		handOverCooldown = false;
