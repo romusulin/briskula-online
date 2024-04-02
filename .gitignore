@@ -4,4 +4,3 @@
 **/dist
 !**/src/webpack/
 **/public/*
-!**/public/images
