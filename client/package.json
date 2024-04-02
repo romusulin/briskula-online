@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "build:webpack": "tsc && webpack --config webpack/prod.js",
-    "build": "npm run build:webpack && npm run build:assets && cp -R ./dist/* ../server/public",
+    "build": "npm run build:webpack && npm run build:assets && npm run copy-to-public",
+    "copy-to-public": "mkdir -p ../server/public && cp -R ./dist/* ../server/public",
     "build:assets": "mkdir -p ./dist/images && cp ./assets/images/* ./dist/images",
     "start": "webpack-dev-server --config webpack/base.js --open"
   },
