@@ -1,6 +1,7 @@
 import { Deck, ICard, EVENTS } from '@briskula-online/briskula-shared-entities';
 import { io, Socket } from 'socket.io-client';
 import $ from 'jquery';
+import * as Notifications from './notifications';
 
 const socket= io();
 
@@ -14,7 +15,6 @@ const opponentCardsEl = document.getElementById('opponent-cards');
 let playerHand = [];
 let playArea = [];
 let myTurn = false;
-let score = 0;
 let handOverCooldown = false;
 
 startGameButton.onclick = () => {
@@ -44,9 +44,11 @@ socket.on(EVENTS.DRAW_CARD, (res) => {
 });
 
 socket.on(EVENTS.PLAYER_ON_TURN, (res) => {
-	console.log(`Na redu je ${res.playerOnTurn} +++ ${res.playerOnTurn === socket.id}`);
 	myTurn = res.playerOnTurn === socket.id;
-})
+	if (myTurn) {
+		Notifications.success('It is your turn.');
+	}
+});
 
 
 socket.on(EVENTS.PLAY_CARD, (res) => {
@@ -74,7 +76,7 @@ socket.on(EVENTS.HAND_FINISHED, (res) => {
 
 socket.on(EVENTS.GAME_OVER, (res) => {
 	setTimeout(() => {
-		alert(JSON.stringify(res))
+		Notifications.success(`'Game over. You've won ${res[socket.id]} points in total.`);
 	}, 2500);
 });
 
@@ -102,7 +104,7 @@ const redrawPlayerHand = () => {
 			}
 
 			if (!myTurn) {
-				alert("Not your turn!");
+				Notifications.warning("Not your turn!");
 				return;
 			}
 
