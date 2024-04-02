@@ -1,26 +1,28 @@
-import Awn from 'awesome-notifications';
-const notifier = new Awn();
+import Toastify from 'toastify-js';
+import 'toastify-js/src/toastify.css';
 
 const success = (msg: string) => {
-	notifier.succes(msg, {
-		durations:{
-			success: 2000
-		},
-		labels: {
-			success: ''
+	Toastify({
+		text: msg,
+		duration: 2000,
+		gravity: "top",
+		position: "right",
+		style: {
+			background: "linear-gradient(to right, #00b09b, #96c93d)",
 		}
-	});
+	}).showToast();
 };
 
 const warning = (msg: string) => {
-	notifier.warning(msg, {
-		durations:{
-			warning: 2000
-		},
-		labels: {
-			warning: ''
+	Toastify({
+		text: msg,
+		duration: 2000,
+		gravity: "top",
+		position: "right",
+		style: {
+			background: "linear-gradient(to right, #ffea29, #dea412)",
 		}
-	});
+	}).showToast();
 };
 
 export {

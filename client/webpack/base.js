@@ -28,6 +28,10 @@ module.exports = {
 			{
 				test: /\.jpg$/i,
 				use: "asset/resource"
+			},
+			{
+				test: /\.css$/i,
+				use: ["style-loader", "css-loader"]
 			}
 		]
 	},
