@@ -35,8 +35,9 @@ io.on('connection', (socket) => {
 
 });
 
-server.listen(process.env.PORT, () => {
-	console.log(`Listening on :${process.env.PORT}`);
+const PORT = process.env.PORT || 80;
+server.listen(PORT, () => {
+	console.log(`Listening on :${PORT}`);
 });
 
 app.use(express.static('public'));
