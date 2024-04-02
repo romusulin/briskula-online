@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "tsc && webpack --config webpack/prod.js && cp ./dist/* ../server/public",
+    "build": "tsc && webpack --config webpack/prod.js && npm run copy-assets && cp -R ./dist/* ../server/public",
+    "copy-assets": "mkdir -p ./dist/images && cp ./assets/images/* ./dist/images",
     "start": "webpack-dev-server --config webpack/base.js --open"
   },
   "author": "",
