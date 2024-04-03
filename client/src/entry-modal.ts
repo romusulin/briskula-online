@@ -47,11 +47,13 @@ export const showEntryModal = () => {
 		html: htmlModal([]),
 		returnInputValueOnDeny: true,
 		didOpen: () => {
-			intervalTimerId = setInterval(async () => {
+			const refreshRooms = async () => {
 				const data = await fetch('/rooms', { method: 'GET'});
 				const jsonData = await data.json();
 				Swal.getHtmlContainer().innerHTML = htmlModal(jsonData);
-			}, 2500);
+			};
+			refreshRooms();
+			intervalTimerId = setInterval(refreshRooms, 2500);
 		},
 		allowOutsideClick: false
 	}).then((res) => {
