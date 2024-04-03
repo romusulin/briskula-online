@@ -1,4 +1,4 @@
-import Swal from 'sweetalert2';
+import Swal, { SweetAlertResult } from 'sweetalert2';
 import { socket} from './socket-instance';
 import { EVENTS} from '@briskula-online/briskula-shared-entities';
 
@@ -64,7 +64,8 @@ export const showEntryModal = () => {
 				didOpen: async () => {
 					Swal.showLoading();
 					socket.once(EVENTS.SET_BRISCOLA, () => {
-						Swal.close();
+						// Close the dialog with an arbitrary reason not to reopen the entry modal
+						Swal.close(99 as Partial<SweetAlertResult<any>>);
 					});
 					socket.emit(EVENTS.JOIN_LOBBY, {
 						name: playerName,
