@@ -39,31 +39,33 @@
         .deck {
             margin-left:300px;
         }
-        .button-container {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-        }
-        .button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        #room-id {
+        #lobby-id {
             display: block;
+        }
+
+        .lobby {
+            width: 28%;
+            height: 50px;
+            background-color: lightblue;
+            border: 1px solid black;
+            margin: 10px;
+            float: left;
+            text-align: center;
+            line-height: 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hover-effect:focus {
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.7);
+        }
+
+        .selected {
+            background-color: #ffcc00;
         }
     </style>
 </head>
 <body>
 <div>
-    <div class="button-container">
-        <input type="text" id="room-id" minlength="1" maxlength="12" size="8" />
-        <button class="button" id="btn-start-game">Ready</button>
-    </div>
     <div id="opponent-cards" class="row"></div>
     <div class="row">
             <div id="play-area" class="row play-area"></div>

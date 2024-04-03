@@ -1,10 +1,11 @@
 import { Deck } from '@briskula-online/briskula-shared-entities';
 import { Server, Socket } from 'socket.io';
 import { ICard, ranks, pointsByRank, PlayedCard, EVENTS } from '@briskula-online/briskula-shared-entities';
+import { Player } from './lobby-manager';
 
 export class Game {
 	deck: Deck;
-	players: string[];
+	players: Player[];
 	playerOnTurnIndex: number;
 	io: Server;
 	table: PlayedCard[];
@@ -13,19 +14,20 @@ export class Game {
 	roomId: string;
 	isDeckEmptied: boolean;
 
-	constructor(io: Server, sockets: Socket[], roomId: string) {
-		console.log('Starting game... players:' + sockets);
+	constructor(io: Server, players: Player[], roomId: string) {
+		console.log('Starting game... players:' + JSON.stringify(players.map(p=>p.name)));
 		this.io = io;
-		this.players = sockets.map(s => s.id);
+		this.players = players;
 		this.deck = new Deck();
 		this.deck.shuffle();
 		this.table = [];
 		this.pointsByPlayer = {
-			[this.players[0]]: 0,
-			[this.players[1]]: 0
+			[this.players[0].socket.id]: 0,
+			[this.players[1].socket.id]: 0
 		};
 		this.roomId = roomId;
 		this.isDeckEmptied = false;
+		this.playerOnTurnIndex = 0;
 
 		this.dealCards(3);
 
@@ -33,11 +35,15 @@ export class Game {
 		this.io.to(this.roomId).emit(EVENTS.SET_BRISCOLA, {card: this.briscolaCard});
 		console.log(`Setting briscola to: ${this.briscolaCard}`);
 
-		this.playerOnTurnIndex = 0;
-		this.io.to(this.roomId).emit(EVENTS.PLAYER_ON_TURN, { playerOnTurn: this.players[this.playerOnTurnIndex]});
 
-		sockets.forEach(s => {
-			s.on(EVENTS.PLAY_CARD, this.playedCardHandler.bind(this));
+		this.io.to(this.roomId).emit(EVENTS.PLAYER_ON_TURN, { playerOnTurn: this.players[this.playerOnTurnIndex].socket.id});
+
+		players.forEach(s => {
+			s.socket.on(EVENTS.PLAY_CARD, this.playedCardHandler.bind(this));
+			s.socket.on('disconnect', () => {
+				// TODO: Abort the game
+				console.log(`### Player ${s.name} has disconnected.`);
+			});
 		});
 	}
 
@@ -53,19 +59,20 @@ export class Game {
 			this.updateScore(winningCard);
 
 			this.io.to(this.roomId).emit(EVENTS.HAND_FINISHED, this.pointsByPlayer);
-			this.playerOnTurnIndex = this.players.findIndex((p) => winningCard.player === p);
+			this.playerOnTurnIndex = this.players.findIndex((p) => winningCard.player === p.socket.id);
 			this.dealCards(1);
 			console.log('Table:' + JSON.stringify(this.table));
 			console.log(`Player #${this.playerOnTurnIndex} ${winningCard.player} won the round with: ${JSON.stringify(winningCard.card)}`);
-			console.log(`Current score: ${this.pointsByPlayer[this.players[0]]} - ${this.pointsByPlayer[this.players[1]]}`)
+			console.log(`Current score: ${this.pointsByPlayer[this.players[0].socket.id]} - ${this.pointsByPlayer[this.players[1].socket.id]}`)
 			this.table = [];
 		}
 
 		if (this.getAccumulatedPoints() === 120) {
 			this.io.to(this.roomId).emit(EVENTS.GAME_OVER, this.pointsByPlayer);
+			this.players.forEach(p => p.socket.leave(this.roomId));
 		}
 
-		this.io.to(this.roomId).emit(EVENTS.PLAYER_ON_TURN, { playerOnTurn: this.players[this.playerOnTurnIndex]});
+		this.io.to(this.roomId).emit(EVENTS.PLAYER_ON_TURN, { playerOnTurn: this.players[this.playerOnTurnIndex].socket.id});
 	}
 
 	dealCards(numberOfCards: number) {
@@ -73,14 +80,14 @@ export class Game {
 			return;
 		}
 
-		const sortedPlayers = [...this.players].sort((a,b) => {
-			return a === this.players[this.playerOnTurnIndex] ? -1 : 1;
+		const sortedPlayers = [...this.players.map(p => p.socket.id)].sort((a,b) => {
+			return a === this.players[this.playerOnTurnIndex].socket.id ? -1 : 1;
 		});
 
-		for (const player of sortedPlayers) {
+		for (const playerSockedId of sortedPlayers) {
 			if (!this.deck.length()) {
 				this.io.to(this.roomId).emit(EVENTS.DRAW_CARD, {
-					player: player,
+					player: playerSockedId,
 					cards: [this.briscolaCard]
 				});
 				this.io.to(this.roomId).emit(EVENTS.SET_BRISCOLA, {card: null});
@@ -90,7 +97,7 @@ export class Game {
 			} else {
 				const drawnCards = this.deck.draw(numberOfCards);
 				this.io.to(this.roomId).emit(EVENTS.DRAW_CARD, {
-					player: player,
+					player: playerSockedId,
 					cards: drawnCards
 				});
 			}

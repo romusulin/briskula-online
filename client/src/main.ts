@@ -1,11 +1,9 @@
-import { Deck, ICard, EVENTS } from '@briskula-online/briskula-shared-entities';
-import { io, Socket } from 'socket.io-client';
+import { EVENTS } from '@briskula-online/briskula-shared-entities';
 import $ from 'jquery';
 import * as Notifications from './notifications';
+import { showEntryModal } from './entry-modal';
+import { socket } from './socket-instance';
 
-const socket= io();
-
-const startGameButton = document.getElementById('btn-start-game');
 const briscolaEl = document.getElementById('briscola');
 const playerHandEl = document.getElementById('player-cards');
 const deckEl = document.getElementById('deck');
@@ -16,14 +14,6 @@ let playerHand = [];
 let playArea = [];
 let myTurn = false;
 let handOverCooldown = false;
-
-startGameButton.onclick = () => {
-	const roomId = document.getElementById('room-id')['value'];
-	socket.emit(EVENTS.PLAYER_READY, {
-		player: socket.id,
-		roomId: roomId
-	});
-};
 
 socket.on(EVENTS.SET_BRISCOLA, (res) => {
 	briscolaEl.innerHTML = !res.card ? '' : `<img src="/images/${res.card.suit}${res.card.rank}.jpg">`;
@@ -138,3 +128,7 @@ const redrawPlayArea = () => {
 
 	playAreaEl.innerHTML = playAreaHtml;
 }
+
+window.onload = () => {
+	showEntryModal();
+};
