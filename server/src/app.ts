@@ -20,7 +20,7 @@ const roomManager = new LobbyManager();
 
 io.on('connection', (socket) => {
 	console.log(`Player connected ${socket.id}`);
-	socket.on('PLAYER_READY', (res: {name:string; lobbyId: string;}) => {
+	socket.on(EVENTS.JOIN_LOBBY, (res: {name:string; lobbyId: string;}) => {
 		if (!res.lobbyId) {
 			return;
 		}
@@ -31,7 +31,6 @@ io.on('connection', (socket) => {
 			socket: socket
 		};
 		roomManager.addPlayer(res.lobbyId, player);
-		socket.broadcast.emit('PLAYER_READY', {lobbies: Object.keys(roomManager.lobbies)});
 
 		const playersInLobby = roomManager.getPlayers(res.lobbyId);
 		if (playersInLobby.length == 2) {
