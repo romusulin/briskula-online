@@ -62,6 +62,7 @@ export const showEntryModal = () => {
 				title: 'Waiting for players...',
 				showCancelButton: true,
 				didOpen: async () => {
+					Swal.showLoading();
 					socket.once(EVENTS.SET_BRISCOLA, () => {
 						Swal.close();
 					});
@@ -69,7 +70,6 @@ export const showEntryModal = () => {
 						name: playerName,
 						lobbyId: playerName
 					});
-					Swal.showLoading();
 				}
 			}).then((res) => {
 				if (res.isDismissed) {
