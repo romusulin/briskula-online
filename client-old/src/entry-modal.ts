@@ -26,7 +26,7 @@ let intervalTimerId;
 
 export const showEntryModal = () => {
 	Swal.fire({
-		title: '<strong>What is your name?</strong>',
+		title: '<strong>Join or create a room <br> Rooms: </strong>',
 		icon: 'info',
 		input: 'text',
 		inputLabel: 'Your name',

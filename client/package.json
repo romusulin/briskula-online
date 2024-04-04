@@ -1,37 +1,29 @@
 {
-  "name": "@briskula-online/client",
-  "version": "1.0.0",
+  "name": "client",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "build:webpack": "tsc && webpack --config webpack/prod.js",
-    "build": "npm run build:webpack && npm run build:assets && npm run copy-to-public",
-    "copy-to-public": "mkdir -p ../server/public && cp -R ./dist/* ../server/public",
-    "build:assets": "mkdir -p ./dist/images && cp ./assets/images/* ./dist/images",
-    "start": "webpack-dev-server --config webpack/base.js --open"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@briskula-online/briskula-shared-entities": "^1.0.0",
-    "socket.io-client": "^4.7.5",
-    "sweetalert2": "^11.10.7",
-    "toastify-js": "^1.12.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.3",
-    "@babel/preset-env": "^7.24.3",
-    "babel-loader": "^9.1.3",
-    "clean-webpack-plugin": "^4.0.0",
-    "css-loader": "^6.10.0",
-    "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^5.6.0",
-    "raw-loader": "^4.0.2",
-    "style-loader": "^3.3.4",
-    "terser-webpack-plugin": "^5.3.10",
-    "ts-loader": "^9.5.1",
-    "webpack": "^5.91.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-merge": "^5.10.0"
-  },
-  "description": ""
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@types/webpack-env": "^1.18.4",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0"
+  }
 }

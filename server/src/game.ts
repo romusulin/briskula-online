@@ -67,6 +67,7 @@ export class Game {
 			this.table = [];
 		}
 
+		// TODO: This needs to be removed and replaced that all cards have been played
 		if (this.getAccumulatedPoints() === 120) {
 			this.io.to(this.roomId).emit(EVENTS.GAME_OVER, this.pointsByPlayer);
 			this.players.forEach(p => p.socket.leave(this.roomId));
